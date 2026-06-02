@@ -155,7 +155,7 @@
             </button>
             
             <div class="flex-grow min-w-0">
-                <div class="font-stencil text-xl text-white truncate leading-none mb-1 tracking-wider">CRAWLING (CHORUS RIFF)</div>
+                <div class="font-stencil text-xl text-white truncate leading-none mb-1 tracking-wider">CRAWLING (HYBRID THEORY)</div>
                 <div class="flex items-center justify-between font-mono-sub text-[10px] text-zinc-400 leading-none">
                     <span id="currentTime">00:00</span>
                     <!-- Simulating Equalizer Bars -->
@@ -168,7 +168,7 @@
                         <div class="bar"></div>
                         <div class="bar"></div>
                     </div>
-                    <span id="totalDuration">00:15</span>
+                    <span id="totalDuration">00:00</span>
                 </div>
                 <!-- Track Bar -->
                 <div class="w-full bg-zinc-800 h-1 mt-2 rounded-full overflow-hidden cursor-pointer relative" id="progressBarContainer">
@@ -183,9 +183,9 @@
             <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5" class="w-full accent-red-600 h-1 bg-zinc-800 cursor-pointer">
         </div>
 
-        <!-- Tag Audio Faktual (Instrumental Rock Riff representing Linkin Park vibe) -->
+        <!-- Tag Audio Faktual (Menggunakan file mp3 yang diunggah) -->
         <audio id="crawlingAudio" loop>
-            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+            <source src="https://files.catbox.moe/yjlxh4.mp3" type="audio/mpeg">
         </audio>
     </div>
 
@@ -200,7 +200,7 @@
                     SUBJECT // ARYA-2009
                 </div>
 
-                <!-- Profile Frame (Updated with New Catbox Image) -->
+                <!-- Profile Frame (Menggunakan Foto Terbaru) -->
                 <div class="relative w-full aspect-square border-2 border-zinc-700 bg-black overflow-hidden mb-6 group">
                     <img src="https://files.catbox.moe/oqe2eu.jpg" alt="Arya Putra Pamungkas" class="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 transition-all duration-700">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
@@ -452,10 +452,13 @@
             // Fungsi Play/Pause
             playPauseBtn.addEventListener('click', () => {
                 if (audio.paused) {
-                    audio.play();
-                    playIcon.classList.add('hidden');
-                    pauseIcon.classList.remove('hidden');
-                    startVisualizer();
+                    audio.play().then(() => {
+                        playIcon.classList.add('hidden');
+                        pauseIcon.classList.remove('hidden');
+                        startVisualizer();
+                    }).catch(err => {
+                        console.log("Audio play blocked/failed:", err);
+                    });
                 } else {
                     audio.pause();
                     pauseIcon.classList.add('hidden');
@@ -464,33 +467,46 @@
                 }
             });
 
-            // Sinkronisasi Durasi Berkas Audio
-            audio.addEventListener('timeupdate', () => {
-                const current = audio.currentTime;
-                const duration = audio.duration || 15; // fallback ke 15 detik jika belum termuat
+            // Sinkronisasi Durasi Berkas Audio asli secara dinamis
+            audio.addEventListener('loadedmetadata', () => {
+                updateDurationLabels();
+            });
 
-                // Ubah format menit:detik
+            function updateDurationLabels() {
+                const current = audio.currentTime;
+                const duration = audio.duration;
+
                 const curMins = Math.floor(current / 60).toString().padStart(2, '0');
                 const curSecs = Math.floor(current % 60).toString().padStart(2, '0');
-                const durMins = Math.floor(duration / 60).toString().padStart(2, '0');
-                const durSecs = Math.floor(duration % 60).toString().padStart(2, '0');
-
                 currentTimeLabel.textContent = `${curMins}:${curSecs}`;
-                if (!isNaN(duration)) {
+
+                if (duration && !isNaN(duration)) {
+                    const durMins = Math.floor(duration / 60).toString().padStart(2, '0');
+                    const durSecs = Math.floor(duration % 60).toString().padStart(2, '0');
                     totalDurationLabel.textContent = `${durMins}:${durSecs}`;
                 }
+            }
+
+            audio.addEventListener('timeupdate', () => {
+                updateDurationLabels();
+                const current = audio.currentTime;
+                const duration = audio.duration;
 
                 // Perbarui Bar Progres
-                const pct = (current / duration) * 100;
-                progressBar.style.width = `${pct}%`;
+                if (duration) {
+                    const pct = (current / duration) * 100;
+                    progressBar.style.width = `${pct}%`;
+                }
             });
 
             // Klik pada bar progres untuk melompat ke detik tertentu
             progressBarContainer.addEventListener('click', (e) => {
                 const rect = progressBarContainer.getBoundingClientRect();
                 const clickPosition = (e.clientX - rect.left) / rect.width;
-                const duration = audio.duration || 15;
-                audio.currentTime = clickPosition * duration;
+                const duration = audio.duration;
+                if (duration) {
+                    audio.currentTime = clickPosition * duration;
+                }
             });
 
             // Volume Kontrol
