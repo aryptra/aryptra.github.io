@@ -5,158 +5,339 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>People in Earth</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome for Discord Icon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Tailwind Configuration & Custom Styles -->
+    <!-- Font Awesome for Discord, Instagram, and Music icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts for an aesthetic look -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['Outfit', 'sans-serif'],
-                    },
-                    colors: {
-                        'discord': '#5865F2',
-                        'discord-hover': '#4752C4',
-                        'earth-bg': '#f9f8f6',
-                        'earth-text': '#2c2925'
                     }
                 }
             }
         }
     </script>
     <style>
-        body {
-            background-color: theme('colors.earth-bg');
-            color: theme('colors.earth-text');
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-            opacity: 0;
-            transform: translateY(20px);
+        ::-webkit-scrollbar-track {
+            background: #1f2937; 
         }
-
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 300ms; }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280; 
         }
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        /* Equalizer Animation */
+        .bar {
+            width: 3px;
+            height: 100%;
+            background-color: #f3f4f6;
+            animation: bounce 1s ease-in-out infinite alternate;
+        }
+        .bar:nth-child(2) { animation-delay: 0.2s; }
+        .bar:nth-child(3) { animation-delay: 0.4s; }
+        .bar:nth-child(4) { animation-delay: 0.1s; }
+        .bar:nth-child(5) { animation-delay: 0.3s; }
+
+        @keyframes bounce {
+            0% { transform: scaleY(0.2); }
+            100% { transform: scaleY(1); }
+        }
+
+        .paused-bars .bar {
+            animation-play-state: paused;
+            transform: scaleY(0.2) !important;
+        }
+
+        /* Spinning Vinyl Animation */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spinning {
+            animation: spin 3s linear infinite;
         }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col">
+<body class="bg-gray-900 text-gray-100 font-sans antialiased min-h-screen flex flex-col relative pb-24">
 
-    <!-- Hero Section -->
-    <header class="relative w-full h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        <!-- Background Image -->
-        <div class="absolute inset-0 z-0">
-            <img src="https://files.catbox.moe/hd0b8b.jpg" alt="People in Earth Background" class="w-full h-full object-cover filter brightness-[0.6] hover:scale-105 transition-transform duration-1000">
-        </div>
-        
-        <!-- Hero Content -->
-        <div class="relative z-10 text-center px-4 fade-in-up">
-            <h1 class="text-5xl sm:text-7xl font-bold text-white tracking-wide mb-4 drop-shadow-lg">
-                People in Earth
-            </h1>
-            <p class="text-gray-200 text-lg sm:text-xl font-light tracking-widest uppercase mt-2">
-                Discord Community
-            </p>
-        </div>
-    </header>
+    <!-- Background Music -->
+    <audio id="bg-music" src="https://files.catbox.moe/ro9u7b.mp3" loop></audio>
+
+    <!-- New Theme Background -->
+    <div class="fixed inset-0 z-0">
+        <img src="https://files.catbox.moe/hd0b8b.jpg" 
+             alt="Theme Background" 
+             class="w-full h-full object-cover opacity-30 blur-md scale-105">
+        <!-- Gradient overlay to ensure content remains readable -->
+        <div class="absolute inset-0 bg-gradient-to-b from-gray-900/70 via-gray-900/50 to-gray-900/90"></div>
+    </div>
 
     <!-- Main Content -->
-    <main class="flex-grow container mx-auto px-4 sm:px-6 py-16 -mt-16 relative z-20 max-w-4xl">
+    <main class="flex-grow flex flex-col items-center justify-center p-6 sm:p-12 z-10 relative">
         
-        <!-- About & Action Card -->
-        <div class="glass-panel rounded-3xl shadow-xl p-8 sm:p-12 text-center fade-in-up delay-100">
-            <div class="mb-8">
-                <i class="fa-solid fa-earth-americas text-4xl text-gray-300 mb-6"></i>
-                <h2 class="text-2xl sm:text-3xl font-semibold mb-4 text-gray-800">About the server</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                    You can make new friends, play games, or just exchange stories here, so enjoy ^^
-                </p>
+        <div class="w-full max-w-4xl bg-white/10 backdrop-blur-xl rounded-3xl p-8 sm:p-12 shadow-2xl border border-white/20 text-center relative overflow-hidden">
+            
+            <!-- Main Profile Picture -->
+            <div class="relative w-48 h-48 sm:w-56 sm:h-56 mx-auto mb-8 group">
+                <div class="absolute inset-0 bg-indigo-500 rounded-full opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500"></div>
+                <img src="https://files.catbox.moe/hd0b8b.jpg" 
+                     alt="Server Display Picture" 
+                     class="w-full h-full rounded-full object-cover shadow-2xl border-4 border-white/20 group-hover:scale-105 transition-transform duration-500 relative z-10">
+            </div>
+
+            <!-- Server Title -->
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 tracking-tight text-white drop-shadow-lg">
+                People in Earth
+            </h1>
+
+            <!-- Two-Column Info Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-10 text-left">
+                <!-- About Card -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="flex items-center gap-3 mb-3 text-indigo-400">
+                        <i class="fas fa-users text-xl"></i>
+                        <h3 class="font-bold text-white text-lg">About Us</h3>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed font-light">
+                        You can make new friends, play games, or just exchange stories here, so enjoy ^^
+                    </p>
+                </div>
+                
+                <!-- Origin Card -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="flex items-center gap-3 mb-3 text-pink-400">
+                        <i class="fas fa-calendar-stars text-xl"></i>
+                        <h3 class="font-bold text-white text-lg">Our Origin</h3>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed font-light">
+                        Created in 2024, July 20, by 5 people who initially only wanted to create a server to have fun.
+                    </p>
+                </div>
             </div>
 
             <!-- Discord Join Button -->
-            <a href="https://discord.gg/MsZsmg7mV" target="_blank" rel="noopener noreferrer" 
-               class="inline-flex items-center justify-center gap-3 bg-discord hover:bg-discord-hover text-white font-semibold py-4 px-10 rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-discord/30 group">
-                <i class="fa-brands fa-discord text-2xl group-hover:animate-bounce"></i>
-                <span class="text-lg">Join the Server</span>
+            <a href="https://discord.gg/MsZsmg7mV" 
+               target="_blank" 
+               class="inline-flex items-center gap-3 bg-[#5865F2] hover:bg-[#4752C4] text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(88,101,242,0.6)] mb-12 ring-2 ring-transparent hover:ring-white/30">
+                <i class="fab fa-discord text-2xl"></i> 
+                <span>Join the Server</span>
             </a>
-        </div>
 
-        <!-- Influential People Section -->
-        <div class="mt-20 mb-10 text-center fade-in-up delay-200">
-            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-[0.2em] mb-10">
-                Influential People Who Created This Server
-            </h3>
-            
-            <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-                <!-- Creator Cards -->
-                <div class="bg-white px-6 py-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3 hover:shadow-md transition-shadow">
-                    <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500">
-                        <i class="fa-solid fa-user-astronaut"></i>
-                    </div>
-                    <span class="font-medium text-gray-700">Arya</span>
-                </div>
+            <!-- Influential People Section -->
+            <div class="py-10 border-t border-white/20">
+                <h2 class="text-2xl font-semibold mb-8 text-white drop-shadow-sm">Influential People</h2>
+                
+                <div class="flex flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8">
+                    
+                    <!-- Arya -->
+                    <a href="https://www.instagram.com/pamungkasputraarya_?igsh=bjdkaWVmbnh6ZXVm" target="_blank" class="group flex flex-col items-center w-24 sm:w-28">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 rounded-full p-[2px] mb-3 group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                            <div class="w-full h-full bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden border-2 border-transparent">
+                                <i class="fab fa-instagram text-2xl text-white group-hover:text-pink-400 transition-colors"></i>
+                            </div>
+                        </div>
+                        <span class="font-medium text-sm sm:text-base text-gray-300 group-hover:text-white transition-colors">Arya</span>
+                    </a>
 
-                <div class="bg-white px-6 py-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3 hover:shadow-md transition-shadow">
-                    <div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500">
-                        <i class="fa-solid fa-seedling"></i>
-                    </div>
-                    <span class="font-medium text-gray-700">Tera</span>
-                </div>
+                    <!-- Tera -->
+                    <a href="https://www.instagram.com/raazura._?igsh=MTlkMGNzdjdqN3ppNg==" target="_blank" class="group flex flex-col items-center w-24 sm:w-28">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 rounded-full p-[2px] mb-3 group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                            <div class="w-full h-full bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden border-2 border-transparent">
+                                <i class="fab fa-instagram text-2xl text-white group-hover:text-pink-400 transition-colors"></i>
+                            </div>
+                        </div>
+                        <span class="font-medium text-sm sm:text-base text-gray-300 group-hover:text-white transition-colors">Tera</span>
+                    </a>
 
-                <div class="bg-white px-6 py-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3 hover:shadow-md transition-shadow">
-                    <div class="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-500">
-                        <i class="fa-solid fa-ghost"></i>
-                    </div>
-                    <span class="font-medium text-gray-700">jauhari</span>
-                </div>
+                    <!-- Jauhari -->
+                    <a href="https://www.instagram.com/mochjauharim.w?igsh=YjZ0cHRoOXUwaHJ6" target="_blank" class="group flex flex-col items-center w-24 sm:w-28">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 rounded-full p-[2px] mb-3 group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                            <div class="w-full h-full bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden border-2 border-transparent">
+                                <i class="fab fa-instagram text-2xl text-white group-hover:text-pink-400 transition-colors"></i>
+                            </div>
+                        </div>
+                        <span class="font-medium text-sm sm:text-base text-gray-300 group-hover:text-white transition-colors">Jauhari</span>
+                    </a>
 
-                <div class="bg-white px-6 py-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3 hover:shadow-md transition-shadow">
-                    <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500">
-                        <i class="fa-solid fa-fire-flame-curved"></i>
-                    </div>
-                    <span class="font-medium text-gray-700">Melvin</span>
-                </div>
+                    <!-- Melvin -->
+                    <a href="https://www.instagram.com/meilvere?igsh=MW9jZ29ndXdqeXo3Mw==" target="_blank" class="group flex flex-col items-center w-24 sm:w-28">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 rounded-full p-[2px] mb-3 group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                            <div class="w-full h-full bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden border-2 border-transparent">
+                                <i class="fab fa-instagram text-2xl text-white group-hover:text-pink-400 transition-colors"></i>
+                            </div>
+                        </div>
+                        <span class="font-medium text-sm sm:text-base text-gray-300 group-hover:text-white transition-colors">Melvin</span>
+                    </a>
 
-                <div class="bg-white px-6 py-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3 hover:shadow-md transition-shadow">
-                    <div class="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center text-rose-500">
-                        <i class="fa-solid fa-meteor"></i>
-                    </div>
-                    <span class="font-medium text-gray-700">Bisma</span>
+                    <!-- Bisma -->
+                    <a href="https://www.instagram.com/xyzrb___?igsh=OGc0cmtydzJwZWx3" target="_blank" class="group flex flex-col items-center w-24 sm:w-28">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 rounded-full p-[2px] mb-3 group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                            <div class="w-full h-full bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden border-2 border-transparent">
+                                <i class="fab fa-instagram text-2xl text-white group-hover:text-pink-400 transition-colors"></i>
+                            </div>
+                        </div>
+                        <span class="font-medium text-sm sm:text-base text-gray-300 group-hover:text-white transition-colors">Bisma</span>
+                    </a>
+
                 </div>
+            </div>
+
+            <!-- Feedback / Support Section -->
+            <div class="pt-10 mt-10 border-t border-white/20 text-left max-w-xl mx-auto">
+                <h2 class="text-2xl font-semibold mb-2 text-white text-center drop-shadow-sm">Have Feedback or Issues?</h2>
+                <p class="text-gray-300 text-sm font-light text-center mb-6">Let us know if you have suggestions or ran into problems. We'd love to hear from you!</p>
+                
+                <form id="feedback-form" class="space-y-4">
+                    <div>
+                        <label for="feedback-type" class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Type of Feedback</label>
+                        <select id="feedback-type" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-gray-800 transition-all">
+                            <option class="bg-gray-900" value="General Inquiry">General Inquiry</option>
+                            <option class="bg-gray-900" value="Server Issue / Bug">Server Issue / Bug</option>
+                            <option class="bg-gray-900" value="Suggestion">Suggestion</option>
+                            <option class="bg-gray-900" value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="feedback-message" class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Your Message</label>
+                        <textarea id="feedback-message" rows="4" placeholder="Describe your experience or problem here..." required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-gray-800 transition-all resize-none"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-sky-500/80 hover:bg-sky-500 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(14,165,233,0.4)] flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane text-xs"></i>
+                        <span>Send Email Feedback</span>
+                    </button>
+                </form>
             </div>
         </div>
     </main>
 
+    <!-- Floating Aesthetic Music Player -->
+    <div id="music-widget" class="fixed bottom-6 right-6 z-50 bg-sky-900/40 backdrop-blur-md px-4 py-3 rounded-2xl border border-sky-400/20 flex items-center gap-4 shadow-2xl transition-all duration-300 transform translate-y-12 opacity-0">
+        <!-- Minimal Vinyl Icon Button -->
+        <button id="music-toggle" class="w-10 h-10 rounded-full bg-white text-gray-900 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform focus:outline-none">
+            <i id="play-icon" class="fas fa-compact-disc text-xl text-sky-900"></i>
+        </button>
+        
+        <!-- Track Details -->
+        <div class="flex flex-col pr-2">
+            <span class="text-[10px] text-sky-300 uppercase tracking-widest font-semibold">Playing Background</span>
+            <span class="text-sm font-bold text-white max-w-[120px] truncate">song</span>
+        </div>
+
+        <!-- Animated Audio Wave -->
+        <div id="visualizer" class="flex items-end justify-between w-6 h-5 gap-[2px] paused-bars">
+            <div class="bar bg-sky-200"></div>
+            <div class="bar bg-sky-200"></div>
+            <div class="bar bg-sky-200"></div>
+            <div class="bar bg-sky-200"></div>
+            <div class="bar bg-sky-200"></div>
+        </div>
+    </div>
+
+    <!-- First Click Prompt Overlay (Auto Dismisses on Click) -->
+    <div id="interaction-overlay" class="fixed bottom-20 right-6 z-40 bg-indigo-500/90 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-lg animate-bounce pointer-events-none transition-opacity duration-500">
+        🔊 Tap anywhere to play song!
+    </div>
+
     <!-- Footer -->
-    <footer class="mt-auto py-8 text-center text-gray-400 text-sm fade-in-up delay-300">
-        <p>© 2026 People in Earth. All rights reserved.</p>
+    <footer class="text-center py-6 text-gray-400 text-sm z-10 relative drop-shadow-md">
+        <p>&copy; <span id="year"></span> People in Earth. All rights reserved.</p>
     </footer>
 
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Background Audio variables
+        const audio = document.getElementById('bg-music');
+        const musicWidget = document.getElementById('music-widget');
+        const musicToggle = document.getElementById('music-toggle');
+        const playIcon = document.getElementById('play-icon');
+        const visualizer = document.getElementById('visualizer');
+        const overlay = document.getElementById('interaction-overlay');
+
+        let audioInitialized = false;
+
+        function initializeAudio() {
+            if (audioInitialized) return;
+            audioInitialized = true;
+            
+            // Show player widget gracefully
+            musicWidget.classList.remove('translate-y-12', 'opacity-0');
+            
+            audio.play().then(() => {
+                updateUI(true);
+            }).catch(err => {
+                console.log("Autoplay block bypass triggered, waiting for explicit play.");
+                updateUI(false);
+            });
+
+            // Hide the tap overlay guide
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.remove(), 500);
+
+            // Remove global initial listeners
+            document.removeEventListener('click', initializeAudio);
+            document.removeEventListener('touchstart', initializeAudio);
+        }
+
+        // Global interaction listeners to kick off background music
+        document.addEventListener('click', initializeAudio);
+        document.addEventListener('touchstart', initializeAudio);
+
+        // Explicit toggle functionality on the player widget itself
+        musicToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); // Stop from triggering the body initialization logic
+            if (audio.paused) {
+                audio.play();
+                updateUI(true);
+            } else {
+                audio.pause();
+                updateUI(false);
+            }
+        });
+
+        function updateUI(isPlaying) {
+            if (isPlaying) {
+                playIcon.classList.add('spinning');
+                visualizer.classList.remove('paused-bars');
+            } else {
+                playIcon.classList.remove('spinning');
+                visualizer.classList.add('paused-bars');
+            }
+        }
+
+        // Feedback Form Action Handler
+        const feedbackForm = document.getElementById('feedback-form');
+        feedbackForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const type = document.getElementById('feedback-type').value;
+            const message = document.getElementById('feedback-message').value;
+            const recipient = "aryaputrapamungkas209@gmail.com";
+            
+            // Set up email subject and body formats
+            const subject = encodeURIComponent(`[People in Earth Website Feedback] - ${type}`);
+            const body = encodeURIComponent(`Hello,\n\nI have some feedback regarding the 'People in Earth' Discord server:\n\nType: ${type}\nMessage:\n${message}\n\n---\nSent via Server Landing Page.`);
+            
+            // Launch mailto draft link
+            window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+        });
+    </script>
 </body>
 </html>
+
+
