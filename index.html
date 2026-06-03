@@ -1,163 +1,852 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>People in Earth</title>
-    
+    <title>Arya Putra Pamungkas | Profile</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome for Discord Icon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Tailwind Configuration & Custom Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['"DM Serif Display"', 'serif'],
+                        sans: ['"Space Grotesk"', 'sans-serif'],
+                        syne: ['"Syne"', 'sans-serif'],
                     },
                     colors: {
-                        'discord': '#5865F2',
-                        'discord-hover': '#4752C4',
-                        'earth-bg': '#f9f8f6',
-                        'earth-text': '#2c2925'
+                        dark: '#0a0a0a',
+                        darker: '#050505',
+                        accent: '#ffffff',
+                        muted: '#8e8e93',
+                        vinyl: '#1a1a1a'
+                    },
+                    animation: {
+                        'spin-slow': 'spin 12s linear infinite',
                     }
                 }
             }
         }
     </script>
     <style>
-        body {
-            background-color: theme('colors.earth-bg');
-            color: theme('colors.earth-text');
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
         
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-            opacity: 0;
-            transform: translateY(20px);
+        /* Custom subtle scanline texture */
+        .scanlines {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            ), linear-gradient(
+                90deg, 
+                rgba(255, 0, 0, 0.04), 
+                rgba(0, 255, 0, 0.01), 
+                rgba(0, 255, 0, 0.04)
+            );
+            background-size: 100% 4px, 6px 100%;
         }
 
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 300ms; }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        /* Vinyl Grooves Effect */
+        .vinyl-grooves {
+            background: repeating-radial-gradient(
+                circle,
+                #222,
+                #222 2px,
+                #151515 4px,
+                #111 5px
+            );
         }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col">
+<body class="bg-dark text-white font-sans overflow-x-hidden selection:bg-white selection:text-black">
 
-    <!-- Hero Section -->
-    <header class="relative w-full h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        <!-- Background Image -->
-        <div class="absolute inset-0 z-0">
-            <img src="https://files.catbox.moe/hd0b8b.jpg" alt="People in Earth Background" class="w-full h-full object-cover filter brightness-[0.6] hover:scale-105 transition-transform duration-1000">
-        </div>
-        
-        <!-- Hero Content -->
-        <div class="relative z-10 text-center px-4 fade-in-up">
-            <h1 class="text-5xl sm:text-7xl font-bold text-white tracking-wide mb-4 drop-shadow-lg">
-                People in Earth
-            </h1>
-            <p class="text-gray-200 text-lg sm:text-xl font-light tracking-widest uppercase mt-2">
-                Discord Community
-            </p>
-        </div>
-    </header>
+    <!-- Ambient Grid & Scanline Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 opacity-40 scanlines"></div>
 
-    <!-- Main Content -->
-    <main class="flex-grow container mx-auto px-4 sm:px-6 py-16 -mt-16 relative z-20 max-w-4xl">
-        
-        <!-- About & Action Card -->
-        <div class="glass-panel rounded-3xl shadow-xl p-8 sm:p-12 text-center fade-in-up delay-100">
-            <div class="mb-8">
-                <i class="fa-solid fa-earth-americas text-4xl text-gray-300 mb-6"></i>
-                <h2 class="text-2xl sm:text-3xl font-semibold mb-4 text-gray-800">About the server</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                    You can make new friends, play games, or just exchange stories here, so enjoy ^^
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-darker/80 backdrop-blur-md border-b border-white/5 px-6 py-4 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- AM Logo Concept -->
+            <a href="#" class="flex items-center space-x-2 group">
+                <span class="font-serif text-2xl tracking-widest font-bold group-hover:opacity-80 transition-opacity">A•P•P</span>
+                <span class="text-xs bg-white text-black px-2 py-0.5 font-bold tracking-widest rounded-sm uppercase">AM-09</span>
+            </a>
+            
+            <!-- Nav Links -->
+            <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest">
+                <a href="#about" class="hover:text-neutral-400 transition-colors">01. Bio</a>
+                <a href="#tracks" class="hover:text-neutral-400 transition-colors">02. Tracks (Hobbies)</a>
+                <a href="#gallery" class="hover:text-neutral-400 transition-colors">03. Gallery</a>
+                <a href="#contact" class="hover:text-neutral-400 transition-colors">04. Record Label</a>
+            </div>
+
+            <!-- Interactive Current Time and Status -->
+            <div class="flex items-center space-x-3 text-xs tracking-wider text-muted font-mono">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="hidden sm:inline">LIVE SESSION</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / Intro Section with Canvas Wave -->
+    <section class="relative min-h-screen flex flex-col justify-between pt-24 pb-12 px-6 z-10 max-w-7xl mx-auto">
+        <div></div>
+
+        <!-- Big Main Interactive Soundwave Display -->
+        <div class="w-full flex flex-col items-center justify-center my-auto py-12">
+            <div class="w-full max-w-4xl relative aspect-[21/9] flex items-center justify-center mb-8">
+                <!-- Interactive Canvas for the AM Sine Wave -->
+                <canvas id="soundwaveCanvas" class="w-full h-full cursor-pointer absolute inset-0 rounded-lg" title="Click to accelerate the wave!"></canvas>
+                <div class="absolute pointer-events-none flex flex-col items-center justify-center text-center">
+                    <span class="text-[10vw] md:text-[8rem] font-serif leading-none tracking-tighter mix-blend-difference select-none">
+                        AM
+                    </span>
+                    <span class="text-xs uppercase tracking-[0.4em] text-muted -mt-2">Arya's Mix</span>
+                </div>
+            </div>
+
+            <!-- Artist Headline -->
+            <div class="text-center max-w-2xl px-4 z-20">
+                <h1 class="text-4xl md:text-6xl font-serif font-bold tracking-tight mb-3">
+                    Arya Putra Pamungkas
+                </h1>
+                <p class="text-muted tracking-[0.2em] text-sm uppercase mb-4">
+                    Est. December 13, 2009 &bull; Curious Mind &bull; Sound Explorer
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <a href="#about" class="border border-white hover:bg-white hover:text-black text-xs uppercase tracking-widest px-6 py-3 transition-all duration-300 rounded-none font-bold">
+                        Read liner notes
+                    </a>
+                    <a href="#tracks" class="bg-white text-black hover:bg-neutral-200 text-xs uppercase tracking-widest px-6 py-3 transition-all duration-300 rounded-none font-bold flex items-center gap-2">
+                        <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Play Tracklist
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scrolling Footer Ribbon -->
+        <div class="w-full border-t border-b border-white/10 py-3 overflow-hidden whitespace-nowrap select-none">
+            <div class="inline-block animate-[marquee_25s_linear_infinite] uppercase tracking-[0.3em] text-xs text-muted">
+                GUITAR • SINGING • PHOTOGRAPHY • HIKING • EXPLORING THE B-SIDES OF LIFE • DEC 13, 2009 • DO I WANNA KNOW? • SUCK IT AND SEE • TRANQUILITY BASE • 
+                GUITAR • SINGING • PHOTOGRAPHY • HIKING • EXPLORING THE B-SIDES OF LIFE • DEC 13, 2009 • DO I WANNA KNOW? • SUCK IT AND SEE • TRANQUILITY BASE • 
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom CSS Animation for Marquee -->
+    <style>
+        @keyframes marquee {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+    </style>
+
+    <!-- Section 01: About / Bio (Liner Notes) -->
+    <section id="about" class="py-24 px-6 max-w-7xl mx-auto border-t border-white/5 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Aesthetic Left Column (Vinyl Concept / Image Grid with custom background) -->
+            <div class="lg:col-span-5 space-y-6">
+                <div class="relative bg-neutral-950 aspect-square p-8 border border-white/15 flex flex-col justify-between overflow-hidden group">
+                    <!-- High-contrast Album Cover Artwork Background -->
+                    <img src="https://files.catbox.moe/tkgyfu.jpg" alt="Art Cover Theme" class="absolute inset-0 w-full h-full object-cover opacity-35 mix-blend-luminosity filter brightness-75 contrast-125 group-hover:scale-105 transition-transform duration-700 z-0" onerror="this.style.display='none'">
+                    
+                    <!-- Dark Gradient Vignette for Readability -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/75 z-10 pointer-events-none"></div>
+
+                    <!-- Album Cover Decorative Corners -->
+                    <div class="absolute top-4 left-4 w-4 h-4 border-t border-l border-white/40 z-20"></div>
+                    <div class="absolute top-4 right-4 w-4 h-4 border-t border-r border-white/40 z-20"></div>
+                    <div class="absolute bottom-4 left-4 w-4 h-4 border-b border-l border-white/40 z-20"></div>
+                    <div class="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-white/40 z-20"></div>
+                    
+                    <span class="text-xs uppercase tracking-widest text-white/70 font-mono relative z-20">Side A / Track 00</span>
+                    
+                    <!-- Stylized Profile Visual -->
+                    <div class="my-auto flex flex-col items-center relative z-20">
+                        <div class="w-24 h-24 rounded-full border border-dashed border-white/40 bg-black/60 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:rotate-45 transition-transform duration-700">
+                            <i data-lucide="music" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <p class="font-serif text-2xl text-center tracking-wide text-white drop-shadow-md">The Curious Explorer</p>
+                        <p class="text-xs text-white/80 mt-1 uppercase tracking-widest font-bold">Arya Putra Pamungkas</p>
+                    </div>
+
+                    <div class="flex justify-between items-end text-xs font-mono text-white/70 relative z-20">
+                        <span>RPM: 45</span>
+                        <span>STEREO</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Editorial Right Column -->
+            <div class="lg:col-span-7 space-y-8 lg:pl-6">
+                <div>
+                    <span class="text-xs font-bold tracking-[0.3em] uppercase text-muted block mb-2">// 01. LINER NOTES</span>
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold tracking-tight">
+                        Who is Arya?
+                    </h2>
+                </div>
+
+                <p class="text-lg md:text-xl text-neutral-300 font-light leading-relaxed">
+                    Born on a cold <strong class="text-white">December 13, 2009</strong>, Arya Putra Pamungkas is a student who lives with a sharp curiosity about the world around him. He refuses to stick to the formula—constantly looking for new chords, unexplored landscapes, and fleeting light captured through a lens.
+                </p>
+
+                <div class="grid grid-cols-2 gap-6 border-t border-white/10 pt-8">
+                    <div>
+                        <h4 class="text-xs uppercase tracking-widest text-muted mb-2">Primary Frequency</h4>
+                        <p class="text-sm font-semibold">Guitar, Singing & Visuals</p>
+                    </div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-widest text-muted mb-2">Field of Exploration</h4>
+                        <p class="text-sm font-semibold">High Altitudes & Deep Forests</p>
+                    </div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-widest text-muted mb-2">Age / Era</h4>
+                        <p class="text-sm font-semibold" id="dynamicAge">Loading...</p>
+                    </div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-widest text-muted mb-2">Sound Signature</h4>
+                        <p class="text-sm font-semibold">Mellow, Retro, Experimental</p>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-950 p-5 border-l-2 border-white/60 text-sm italic text-neutral-400">
+                    "A student who is genuinely curious about new things and absolutely loves to explore. Finding harmony in chords and quiet wild mountain trails."
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section 02: Hobbies & Tracks (Interactive Vinyl Deck) -->
+    <section id="tracks" class="py-24 bg-darker border-t border-b border-white/5 relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="text-center max-w-xl mx-auto mb-16">
+                <span class="text-xs font-bold tracking-[0.3em] uppercase text-muted block mb-2">// 02. MIXTAPE SELECTIONS</span>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold tracking-tight">The Tracks (Hobbies)</h2>
+                <p class="text-muted text-sm mt-2">Pick a track below to spin the vinyl and play Arya's premium background track.</p>
+            </div>
+
+            <!-- Interactive Record Deck Wrapper -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left: Interactive Vinyl Record Visualizer -->
+                <div class="lg:col-span-5 flex flex-col items-center justify-center">
+                    <div class="relative w-72 h-72 md:w-96 md:h-96">
+                        <!-- Tonearm -->
+                        <div id="tonearm" class="absolute -top-10 -right-2 w-32 h-44 origin-[90%_10%] rotate-[-25deg] transition-transform duration-700 ease-in-out z-30 pointer-events-none">
+                            <svg viewBox="0 0 100 200" class="w-full h-full drop-shadow-lg">
+                                <!-- Metal arm arm -->
+                                <path d="M 85 20 Q 80 120 40 160 Q 30 170 30 190" fill="none" stroke="#d4d4d8" stroke-width="3"/>
+                                <!-- Pivot Base -->
+                                <circle cx="85" cy="20" r="10" fill="#27272a"/>
+                                <circle cx="85" cy="20" r="5" fill="#52525b"/>
+                                <!-- Cartridge/Stylus head -->
+                                <rect x="22" y="185" width="16" height="12" rx="2" fill="#a1a1aa" transform="rotate(-15 30 190)"/>
+                                <circle cx="30" cy="191" r="2" fill="#ef4444"/>
+                            </svg>
+                        </div>
+
+                        <!-- Outer Vinyl Record -->
+                        <div id="vinylRecord" class="w-full h-full rounded-full vinyl-grooves border-4 border-neutral-800 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative flex items-center justify-center transition-all duration-300">
+                            <!-- Inner Label -->
+                            <div id="recordLabel" class="w-28 h-28 md:w-36 md:h-36 rounded-full bg-white text-black p-4 flex flex-col justify-between items-center text-center transition-colors duration-500 select-none">
+                                <span class="text-[9px] uppercase tracking-widest font-mono font-bold border-b border-black/10 pb-1 w-full text-center">ARYA MIX</span>
+                                <div class="my-auto animate-pulse">
+                                    <h4 id="recordTitle" class="font-serif text-sm md:text-base font-bold leading-tight line-clamp-1">Track 01</h4>
+                                    <p id="recordSubtitle" class="text-[9px] uppercase tracking-wider text-neutral-500 line-clamp-1">favorite song</p>
+                                </div>
+                                <div class="w-3 h-3 rounded-full bg-black border border-white"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audio Player Interface Controls -->
+                    <div class="mt-8 flex flex-col items-center w-full max-w-xs space-y-4">
+                        <div class="flex items-center justify-center space-x-6 bg-neutral-900 border border-white/5 py-3 px-6 rounded-full w-full">
+                            <button id="prevBtn" class="hover:text-white text-neutral-400 transition-colors">
+                                <i data-lucide="skip-back" class="w-5 h-5"></i>
+                            </button>
+                            <button id="playBtn" class="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+                                <i id="playIcon" data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+                            </button>
+                            <button id="nextBtn" class="hover:text-white text-neutral-400 transition-colors">
+                                <i data-lucide="skip-forward" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        <!-- Simple Progress Slider (Track Progress Tracker) -->
+                        <div class="w-full px-2 flex items-center space-x-2 text-xs text-neutral-400 font-mono">
+                            <span id="currentTime">0:00</span>
+                            <div class="flex-1 bg-neutral-800 h-1 rounded-full relative overflow-hidden cursor-pointer" id="progressTrack">
+                                <div class="bg-white h-full w-0 transition-all duration-100" id="progressBar"></div>
+                            </div>
+                            <span id="duration">0:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Tracks Playlist Selection & Details -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="space-y-4">
+                        <!-- Track List Items -->
+                        <div id="track-0" onclick="selectTrack(0)" class="track-item cursor-pointer flex items-center justify-between p-4 border border-white/10 hover:border-white bg-neutral-950 transition-all duration-300 group" data-track="0">
+                            <div class="flex items-center space-x-4">
+                                <span class="font-mono text-xs text-muted group-hover:text-white transition-colors">01.</span>
+                                <div>
+                                    <h3 class="font-serif text-lg tracking-wide group-hover:text-white transition-colors">Party Anthem</h3>
+                                    <span class="text-xs uppercase tracking-wider text-muted">favorite song</span>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono text-muted">Active Master</span>
+                        </div>
+
+                        <div id="track-1" onclick="selectTrack(1)" class="track-item cursor-pointer flex items-center justify-between p-4 border border-white/5 hover:border-white bg-transparent transition-all duration-300 group" data-track="1">
+                            <div class="flex items-center space-x-4">
+                                <span class="font-mono text-xs text-muted group-hover:text-white transition-colors">02.</span>
+                                <div>
+                                    <h3 class="font-serif text-lg tracking-wide group-hover:text-white transition-colors">Prologue</h3>
+                                    <span class="text-xs uppercase tracking-wider text-muted">favorite song</span>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono text-muted">Active Master</span>
+                        </div>
+
+                        <div id="track-2" onclick="selectTrack(2)" class="track-item cursor-pointer flex items-center justify-between p-4 border border-white/5 hover:border-white bg-transparent transition-all duration-300 group" data-track="2">
+                            <div class="flex items-center space-x-4">
+                                <span class="font-mono text-xs text-muted group-hover:text-white transition-colors">03.</span>
+                                <div>
+                                    <h3 class="font-serif text-lg tracking-wide group-hover:text-white transition-colors">Missery Business</h3>
+                                    <span class="text-xs uppercase tracking-wider text-muted">favorite song</span>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono text-muted">Active Master</span>
+                        </div>
+
+                        <div id="track-3" onclick="selectTrack(3)" class="track-item cursor-pointer flex items-center justify-between p-4 border border-white/5 hover:border-white bg-transparent transition-all duration-300 group" data-track="3">
+                            <div class="flex items-center space-x-4">
+                                <span class="font-mono text-xs text-muted group-hover:text-white transition-colors">04.</span>
+                                <div>
+                                    <h3 class="font-serif text-lg tracking-wide group-hover:text-white transition-colors">Papercut</h3>
+                                    <span class="text-xs uppercase tracking-wider text-muted">favorite song</span>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono text-muted">Active Master</span>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Liner Notes Box based on track selected -->
+                    <div class="bg-neutral-900 border border-white/10 p-6 min-h-[160px] flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest text-muted block mb-1">Track Liner Info</span>
+                            <p id="trackDescription" class="text-sm text-neutral-300 leading-relaxed">
+                                The guitar is Arya's core engine of expression. Influenced by iconic indie rock chords, he loves turning empty afternoons into full, driving sonic landscapes.
+                            </p>
+                        </div>
+                        <div class="border-t border-white/5 pt-4 mt-4 flex items-center justify-between text-xs text-muted font-mono">
+                            <span id="playingStateLabel">Status: READY TO SPIN</span>
+                            <span id="trackTempo">TEMPO: MIDTEMPO</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section 03: Photo Gallery (Now Beautiful Full-Color) -->
+    <section id="gallery" class="py-24 px-6 max-w-7xl mx-auto relative z-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+                <span class="text-xs font-bold tracking-[0.3em] uppercase text-muted block mb-2">// 03. CAPTURED MOMENTS</span>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold tracking-tight">The Visual Log</h2>
+                <p class="text-neutral-400 mt-2 max-w-lg">
+                    Arya's perspective on hiking trails, urban geometric symmetry, and high-quality artistic life captured in vibrant color.
                 </p>
             </div>
-
-            <!-- Discord Join Button -->
-            <a href="https://discord.gg/MsZsmg7mV" target="_blank" rel="noopener noreferrer" 
-               class="inline-flex items-center justify-center gap-3 bg-discord hover:bg-discord-hover text-white font-semibold py-4 px-10 rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-discord/30 group">
-                <i class="fa-brands fa-discord text-2xl group-hover:animate-bounce"></i>
-                <span class="text-lg">Join the Server</span>
-            </a>
-        </div>
-
-        <!-- Influential People Section -->
-        <div class="mt-20 mb-10 text-center fade-in-up delay-200">
-            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-[0.2em] mb-10">
-                Influential People Who Created This Server
-            </h3>
-            
-            <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-                <!-- Creator Cards as Links -->
-                <a href="https://www.instagram.com/pamungkasputraarya_?igsh=bjdkaWVmbnh6ZXVm" target="_blank" rel="noopener noreferrer" class="bg-white px-6 py-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3 hover:shadow-md hover:scale-105 transition-all duration-300 cursor-pointer group">
-                    <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 group-hover:bg-blue-100 transition-colors">
-                        <i class="fa-brands fa-instagram text-lg"></i>
-                    </div>
-                    <span class="font-medium text-gray-700 group-hover:text-blue-600 transition-colors">Arya</span>
-                </a>
-
-                <a href="https://www.instagram.com/raazura._?igsh=MTlkMGNzdjdqN3ppNg==" target="_blank" rel="noopener noreferrer" class="bg-white px-6 py-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3 hover:shadow-md hover:scale-105 transition-all duration-300 cursor-pointer group">
-                    <div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500 group-hover:bg-emerald-100 transition-colors">
-                        <i class="fa-brands fa-instagram text-lg"></i>
-                    </div>
-                    <span class="font-medium text-gray-700 group-hover:text-emerald-600 transition-colors">Tera</span>
-                </a>
-
-                <a href="https://www.instagram.com/mochjauharim.w?igsh=YjZ0cHRoOXUwaHJ6" target="_blank" rel="noopener noreferrer" class="bg-white px-6 py-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3 hover:shadow-md hover:scale-105 transition-all duration-300 cursor-pointer group">
-                    <div class="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-500 group-hover:bg-purple-100 transition-colors">
-                        <i class="fa-brands fa-instagram text-lg"></i>
-                    </div>
-                    <span class="font-medium text-gray-700 group-hover:text-purple-600 transition-colors">jauhari</span>
-                </a>
-
-                <a href="https://www.instagram.com/meilvere?igsh=MW9jZ29ndXdqeXo3Mw==" target="_blank" rel="noopener noreferrer" class="bg-white px-6 py-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3 hover:shadow-md hover:scale-105 transition-all duration-300 cursor-pointer group">
-                    <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 group-hover:bg-amber-100 transition-colors">
-                        <i class="fa-brands fa-instagram text-lg"></i>
-                    </div>
-                    <span class="font-medium text-gray-700 group-hover:text-amber-600 transition-colors">Melvin</span>
-                </a>
-
-                <a href="https://www.instagram.com/xyzrb___?igsh=OGc0cmtydzJwZWx3" target="_blank" rel="noopener noreferrer" class="bg-white px-6 py-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3 hover:shadow-md hover:scale-105 transition-all duration-300 cursor-pointer group">
-                    <div class="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center text-rose-500 group-hover:bg-rose-100 transition-colors">
-                        <i class="fa-brands fa-instagram text-lg"></i>
-                    </div>
-                    <span class="font-medium text-gray-700 group-hover:text-rose-600 transition-colors">Bisma</span>
-                </a>
+            <div class="mt-4 md:mt-0 flex gap-2">
+                <button onclick="filterGallery('all')" class="gallery-tab bg-white text-black px-4 py-2 text-xs uppercase tracking-widest font-bold">All</button>
+                <button onclick="filterGallery('hiking')" class="gallery-tab border border-white/20 hover:border-white px-4 py-2 text-xs uppercase tracking-widest">Hiking</button>
+                <button onclick="filterGallery('photography')" class="gallery-tab border border-white/20 hover:border-white px-4 py-2 text-xs uppercase tracking-widest">Photography</button>
             </div>
         </div>
-    </main>
+
+        <!-- Custom Photo Grid with updated photography elements -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Photography Custom Image 1 (7gzxm4.dng) -->
+            <div class="gallery-item group cursor-pointer bg-neutral-950 p-4 border border-white/10 hover:border-white/40 transition-all duration-300" data-cat="photography">
+                <div class="aspect-[4/5] bg-neutral-900 overflow-hidden relative mb-4">
+                    <img src="https://files.catbox.moe/7gzxm4.dng" alt="Arya's Custom Photography Log 1" class="w-full h-full object-cover brightness-100 contrast-100 group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.alt='RAW Image Frame (7gzxm4.dng)'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        <span class="text-xs uppercase tracking-widest">RAW Digital Negative Frame</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="font-serif">RAW Exposure Study</span>
+                    <span class="text-xs font-mono text-muted">PHOTOGRAPHY / 2026</span>
+                </div>
+            </div>
+
+            <!-- Photography Custom Image 2 (c6xkjp.jpg) -->
+            <div class="gallery-item group cursor-pointer bg-neutral-950 p-4 border border-white/10 hover:border-white/40 transition-all duration-300" data-cat="photography">
+                <div class="aspect-[4/5] bg-neutral-900 overflow-hidden relative mb-4">
+                    <img src="https://files.catbox.moe/c6xkjp.jpg" alt="Arya's Custom Photography Log 2" class="w-full h-full object-cover brightness-100 contrast-100 group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        <span class="text-xs uppercase tracking-widest">Aesthetic Contrast Composition</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="font-serif">Vocal Session & Stage</span>
+                    <span class="text-xs font-mono text-muted">MUSIC / 2026</span>
+                </div>
+            </div>
+
+            <!-- Hiking Custom Image 3 (z5f0vt.jpg) -->
+            <div class="gallery-item group cursor-pointer bg-neutral-950 p-4 border border-white/10 hover:border-white/40 transition-all duration-300" data-cat="hiking">
+                <div class="aspect-[4/5] bg-neutral-900 overflow-hidden relative mb-4">
+                    <img src="https://files.catbox.moe/z5f0vt.jpg" alt="Arya's Hiking Log 1" class="w-full h-full object-cover brightness-100 contrast-100 group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        <span class="text-xs uppercase tracking-widest">Into the quiet heights</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="font-serif">Summit Trails</span>
+                    <span class="text-xs font-mono text-muted">HIKING / 2026</span>
+                </div>
+            </div>
+
+            <!-- Hiking Custom Image 4 (5tgq3a.jpg) -->
+            <div class="gallery-item group cursor-pointer bg-neutral-950 p-4 border border-white/10 hover:border-white/40 transition-all duration-300" data-cat="hiking">
+                <div class="aspect-[4/5] bg-neutral-900 overflow-hidden relative mb-4">
+                    <img src="https://files.catbox.moe/5tgq3a.jpg" alt="Arya's Hiking Log 2" class="w-full h-full object-cover brightness-100 contrast-100 group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        <span class="text-xs uppercase tracking-widest">Deep in the green woods</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="font-serif">Wild Wilderness</span>
+                    <span class="text-xs font-mono text-muted">HIKING / 2026</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 04: Interactive Contact / Booking (Record Label Style) -->
+    <section id="contact" class="py-24 bg-darker border-t border-white/5 relative z-10">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <span class="text-xs font-bold tracking-[0.3em] uppercase text-muted block mb-2">// 04. GET IN TOUCH</span>
+            <h2 class="text-4xl md:text-5xl font-serif font-bold tracking-tight mb-4">Leave a Record</h2>
+            <p class="text-muted max-w-md mx-auto mb-12">
+                Have a project recommendation, hiking plan, music collaboration, or just want to swap Arctic Monkeys setlists? Hit me up.
+            </p>
+
+            <form id="contactForm" onsubmit="handleContactSubmit(event)" class="text-left space-y-6 max-w-xl mx-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-xs uppercase tracking-widest text-muted block">Your Alias/Name</label>
+                        <input type="text" required class="w-full bg-neutral-950 border border-white/10 focus:border-white px-4 py-3 text-sm focus:outline-none transition-colors" placeholder="e.g. Alex Turner">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs uppercase tracking-widest text-muted block">Your Signal (Email)</label>
+                        <input type="email" required class="w-full bg-neutral-950 border border-white/10 focus:border-white px-4 py-3 text-sm focus:outline-none transition-colors" placeholder="your@email.com">
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-widest text-muted block">The Liner Notes (Message)</label>
+                    <textarea rows="4" required class="w-full bg-neutral-950 border border-white/10 focus:border-white px-4 py-3 text-sm focus:outline-none transition-colors resize-none" placeholder="Write your message here..."></textarea>
+                </div>
+                <button type="submit" class="w-full bg-white text-black font-bold uppercase tracking-widest py-4 hover:bg-neutral-200 transition-colors">
+                    Send Transmission
+                </button>
+            </form>
+            
+            <div id="contactSuccess" class="hidden max-w-xl mx-auto mt-6 p-4 bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-sm">
+                Message successfully logged! Our recording booth will review your transmission.
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="mt-auto py-8 text-center text-gray-400 text-sm fade-in-up delay-300">
-        <p>© 2026 People in Earth. All rights reserved.</p>
+    <footer class="bg-darker py-12 px-6 border-t border-white/5 relative z-10 text-center text-xs text-muted">
+        <div class="max-w-7xl mx-auto space-y-4">
+            <div class="flex justify-center space-x-8">
+                <!-- X Link with SVG Icon -->
+                <a href="https://x.com/Pmks1312" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 hover:text-white transition-colors group">
+                    <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current group-hover:scale-110 transition-transform"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+                    <span>X</span>
+                </a>
+                
+                <!-- Instagram Link with Lucide Icon -->
+                <a href="https://www.instagram.com/pamungkasputraarya_?igsh=bjdkaWVmbnh6ZXVm" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 hover:text-white transition-colors group">
+                    <i data-lucide="instagram" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                    <span>Instagram</span>
+                </a>
+                
+                <!-- GitHub -->
+                <a href="#" class="flex items-center space-x-2 hover:text-white transition-colors group">
+                    <i data-lucide="github" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                    <span>GitHub</span>
+                </a>
+            </div>
+            <p>&copy; 2026 Arya Putra Pamungkas. Inspired by Arctic Monkeys' "AM" & "Tranquility Base Hotel & Casino". All rights reserved.</p>
+        </div>
     </footer>
 
+    <!-- Interactive JS logic -->
+    <script>
+        // Tracklist Data with updated tracks and "favorite song" labels
+        const tracks = [
+            {
+                title: "Party Anthem",
+                label: "favorite song",
+                tempo: "TEMPO: 110 BPM",
+                audioUrl: "https://files.catbox.moe/hr1g4n.mp3",
+                description: "The guitar is Arya's core engine of expression. Heavily influenced by sleek indie rock chords, punchy overdrive, and warm blues grooves. He loves turning empty quiet afternoons into driving sonic waves."
+            },
+            {
+                title: "Prologue",
+                label: "favorite song",
+                tempo: "TEMPO: MELLOW",
+                audioUrl: "https://files.catbox.moe/ro9u7b.mp3",
+                description: "Vocal layering with nostalgic melodies. Arya explores raw vocal styling to pair with acoustic guitars, blending moody bedroom indie sounds with powerful choruses."
+            },
+            {
+                title: "Missery Business",
+                label: "favorite song",
+                tempo: "TEMPO: HIGH UPBEAT",
+                audioUrl: "https://files.catbox.moe/g0hcqc.mp3",
+                description: "A fast-paced, infectious track full of driving rock energies. Arya explores sharp vocal delivery, crisp instrumental dynamics, and alternative-punk structures."
+            },
+            {
+                title: "Papercut",
+                label: "favorite song",
+                tempo: "TEMPO: STEADY ROCK",
+                audioUrl: "https://files.catbox.moe/8cart6.mp3",
+                description: "Deep, intense rhythm lines mixing classic alternative rock with sharp visual focus. Reflective lyrics set against massive wall-of-sound guitar textures."
+            }
+        ];
+
+        let currentTrackIdx = 0;
+        let isPlaying = false;
+        let rotationAngle = 0;
+        let rotationInterval;
+
+        // HTML5 Audio Engine Integration
+        const audio = new Audio();
+        audio.src = tracks[currentTrackIdx].audioUrl;
+        audio.loop = true;
+
+        // Soundwave Canvas Parameters
+        const canvas = document.getElementById('soundwaveCanvas');
+        const ctx = canvas.getContext('2d');
+        let animationFrameId;
+        let timeOffset = 0;
+        let speed = 0.05; // Base speed of wave animation
+
+        // Dynamic Age Calculation
+        const bornDate = new Date(2009, 11, 13); // Dec 13, 2009
+        function calculateAge() {
+            const now = new Date();
+            let age = now.getFullYear() - bornDate.getFullYear();
+            const monthDiff = now.getMonth() - bornDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < bornDate.getDate())) {
+                age--;
+            }
+            document.getElementById('dynamicAge').innerText = `${age} Years (Era 2009)`;
+        }
+
+        // Initialize Canvas Size
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+
+        // Draw Arctic Monkeys "AM" style wave
+        function drawWave() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const width = canvas.width;
+            const height = canvas.height;
+            const centerY = height / 2;
+            
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = 'round';
+            
+            // Draw dual sinusoidal wave merging in center
+            for (let i = 0; i < 3; i++) {
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(255, 255, 255, ${1 - i * 0.35})`;
+                
+                for (let x = 0; x < width; x++) {
+                    // AM characteristic envelope shape: narrow at edges, wide inside, dipped/split at center
+                    const distFromCenter = Math.abs(x - width/2) / (width/2);
+                    let envelope = Math.sin(distFromCenter * Math.PI);
+                    
+                    // Add the "AM" logo signature split/dent at the absolute center
+                    const centerDent = Math.max(0, 1 - Math.exp(-Math.pow(distFromCenter * 8, 2)));
+                    envelope *= centerDent;
+
+                    // Wave Math
+                    const freq = 0.02 + (i * 0.002);
+                    const amplitude = 50 * (isPlaying ? 1.5 : 0.8);
+                    const y = centerY + Math.sin(x * freq + timeOffset * (1 + i * 0.2)) * amplitude * envelope;
+                    
+                    if (x === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.stroke();
+            }
+
+            // Slowly increment time offset
+            timeOffset += speed;
+            animationFrameId = requestAnimationFrame(drawWave);
+        }
+
+        // Speed boost interaction on wave click
+        canvas.addEventListener('click', () => {
+            speed = 0.25;
+            setTimeout(() => {
+                speed = isPlaying ? 0.12 : 0.05;
+            }, 800);
+        });
+
+        // Interactive Vinyl Player Engine
+        const vinylRecord = document.getElementById('vinylRecord');
+        const tonearm = document.getElementById('tonearm');
+        const playBtn = document.getElementById('playBtn');
+        const playIcon = document.getElementById('playIcon');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        const recordTitle = document.getElementById('recordTitle');
+        const recordSubtitle = document.getElementById('recordSubtitle');
+        const trackDescription = document.getElementById('trackDescription');
+        const trackTempo = document.getElementById('trackTempo');
+        
+        // Progress elements
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const progressBar = document.getElementById('progressBar');
+        const progressTrack = document.getElementById('progressTrack');
+        const playingStateLabel = document.getElementById('playingStateLabel');
+
+        function updateTrackUI() {
+            const track = tracks[currentTrackIdx];
+            
+            // Set dynamic text
+            recordTitle.innerText = `Track 0${currentTrackIdx + 1}`;
+            recordSubtitle.innerText = track.title;
+            trackDescription.innerText = track.description;
+            trackTempo.innerText = track.tempo;
+
+            // Dynamically update the vinyl record label sub-text to "favorite song"
+            const recordSubtitleEl = document.getElementById('recordSubtitle');
+            if (recordSubtitleEl) {
+                recordSubtitleEl.innerText = track.label;
+            }
+
+            // Update Track List active highlight styles
+            document.querySelectorAll('.track-item').forEach((item, index) => {
+                if (index === currentTrackIdx) {
+                    item.classList.add('bg-neutral-950', 'border-white');
+                    item.classList.remove('bg-transparent', 'border-white/5');
+                } else {
+                    item.classList.remove('bg-neutral-950', 'border-white');
+                    item.classList.add('bg-transparent', 'border-white/5');
+                }
+            });
+        }
+
+        // Format duration utility
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Handle Audio Progress Tracker updates
+        audio.addEventListener('timeupdate', () => {
+            const pct = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = `${pct}%`;
+            currentTimeEl.innerText = formatTime(audio.currentTime);
+        });
+
+        audio.addEventListener('loadedmetadata', () => {
+            durationEl.innerText = formatTime(audio.duration);
+        });
+
+        // Click track to seek inside the song
+        progressTrack.addEventListener('click', (e) => {
+            const rect = progressTrack.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            const percentage = clickX / width;
+            audio.currentTime = percentage * audio.duration;
+        });
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                // Play HTML Audio
+                audio.play().catch(err => {
+                    console.log("Audio play deferred awaiting user tap event: ", err);
+                });
+
+                // Adjust Tonearm position
+                tonearm.style.transform = 'rotate(8deg)';
+                // Rotate vinyl
+                clearInterval(rotationInterval);
+                rotationInterval = setInterval(() => {
+                    rotationAngle += 1.5;
+                    vinylRecord.style.transform = `rotate(${rotationAngle}deg)`;
+                }, 16);
+                // Update Play Icon to Pause
+                playIcon.setAttribute('data-lucide', 'pause');
+                // Increase soundwave speed
+                speed = 0.12;
+                playingStateLabel.innerText = "Status: NOW SPINNING";
+            } else {
+                // Pause HTML Audio
+                audio.pause();
+
+                // Return Tonearm to base position
+                tonearm.style.transform = 'rotate(-25deg)';
+                clearInterval(rotationInterval);
+                playIcon.setAttribute('data-lucide', 'play');
+                speed = 0.05;
+                playingStateLabel.innerText = "Status: STATION PAUSED";
+            }
+            lucide.createIcons(); // refresh lucide elements
+        }
+
+        function selectTrack(idx) {
+            const wasPlaying = isPlaying;
+            if (isPlaying) {
+                audio.pause();
+            }
+            
+            currentTrackIdx = idx;
+            
+            // Swap audio source
+            audio.src = tracks[currentTrackIdx].audioUrl;
+            audio.load();
+            
+            updateTrackUI();
+            
+            // Auto start playing on selection if it was already playing, or force play
+            if (wasPlaying) {
+                audio.play().then(() => {
+                    playingStateLabel.innerText = "Status: NOW SPINNING";
+                }).catch(err => console.log(err));
+            } else {
+                togglePlay();
+            }
+        }
+
+        playBtn.addEventListener('click', togglePlay);
+        
+        prevBtn.addEventListener('click', () => {
+            const wasPlaying = isPlaying;
+            if (isPlaying) audio.pause();
+            currentTrackIdx = (currentTrackIdx - 1 + tracks.length) % tracks.length;
+            audio.src = tracks[currentTrackIdx].audioUrl;
+            audio.load();
+            updateTrackUI();
+            if (wasPlaying) {
+                audio.play().catch(err => console.log(err));
+            } else {
+                togglePlay();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            const wasPlaying = isPlaying;
+            if (isPlaying) audio.pause();
+            currentTrackIdx = (currentTrackIdx + 1) % tracks.length;
+            audio.src = tracks[currentTrackIdx].audioUrl;
+            audio.load();
+            updateTrackUI();
+            if (wasPlaying) {
+                audio.play().catch(err => console.log(err));
+            } else {
+                togglePlay();
+            }
+        });
+
+        // Filterable Photography/Hiking Gallery
+        function filterGallery(category) {
+            // Update tabs UI
+            document.querySelectorAll('.gallery-tab').forEach(tab => {
+                tab.className = "gallery-tab border border-white/20 hover:border-white px-4 py-2 text-xs uppercase tracking-widest text-white transition-all";
+            });
+            
+            event.target.className = "gallery-tab bg-white text-black px-4 py-2 text-xs uppercase tracking-widest font-bold transition-all";
+
+            // Filter cards
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                if (category === 'all' || item.getAttribute('data-cat') === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Contact form submission
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            document.getElementById('contactForm').reset();
+            const successMsg = document.getElementById('contactSuccess');
+            successMsg.classList.remove('hidden');
+            setTimeout(() => {
+                successMsg.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Initialize Everything
+        window.onload = function() {
+            lucide.createIcons();
+            calculateAge();
+            resizeCanvas();
+            drawWave();
+            updateTrackUI();
+            
+            // Set initial duration label in case audio loads fast
+            if (audio.duration) {
+                durationEl.innerText = formatTime(audio.duration);
+            }
+        }
+
+        // Handle viewport adjustments dynamically
+        window.onresize = function() {
+            resizeCanvas();
+        }
+    </script>
 </body>
 </html>
 
